@@ -5,5 +5,6 @@ Rails.application.routes.draw do
     get 'things', to: 'things#index'
     resources :cats, only:[:index, :update]
     get 'cats_all', to: "cats#all"
+    get 'my_cats', to: "cats#my_cats"
   end
 end

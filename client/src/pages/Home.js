@@ -15,10 +15,29 @@ export default function Home() {
       alert(err);
     }
   };
+  // ui only no db interactio
+  const removeCat = (id) => {
+    setCats(cats.filter((c) => c.id !== id));
+  };
+  // db Interaction
+  const upVote = async (id) => {
+    try {
+      let res = await axios.put(`/api/cats/${id}`);
+      removeCat(id);
+    } catch (err) {
+      alert(err);
+      console.log("err");
+    }
+  };
   // sample get a random cat of arr
   const renderCat = () => {
     if (cats.length == 0) {
-      return <p>No cats</p>;
+      return (
+        <>
+          {" "}
+          <p>No cats</p>
+        </>
+      );
     }
     let index = Math.floor(Math.random() * cats.length);
     let cat = cats[index];
@@ -35,20 +54,25 @@ export default function Home() {
             <Card.Meta>{cat.registry}</Card.Meta>
           </Card.Content>
           <Card.Content extra>
-            <Button color="red" icon basic>
+            <Button color="red" icon basic onClick={() => removeCat(cat.id)}>
               <Icon name="thumbs down" />
             </Button>
-            <Button color="green" icon basic>
+            <Button color="green" icon basic onClick={() => upVote(cat.id)}>
               <Icon name="thumbs up" />
             </Button>
           </Card.Content>
         </Card>
-        <Link to="/my_cats">
-          <Button color="blue">My Cats</Button>
-        </Link>
       </div>
     );
   };
 
-  return <div>{renderCat()}</div>;
+  return (
+    <div>
+      {renderCat()}
+      <br />
+      <Link to="/my_cats">
+        <Button color="blue">My Cats</Button>
+      </Link>
+    </div>
+  );
 }

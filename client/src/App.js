@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import FetchUser from "./components/FetchUser";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MyCats from "./pages/MyCats";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Switch>
             {/* you have to be logged in to see this */}
             <ProtectedRoute exact path="/" component={Home} />
+            <ProtectedRoute exact path="/my_cats" component={MyCats} />
             {/* you do not have to be logged in to see this */}
             <Route exact path="/things" component={Things} />
             <Route exact path="/components" component={ComponentDemo} />
