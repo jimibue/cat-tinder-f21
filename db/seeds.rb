@@ -7,5 +7,13 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 require 'faker'
-Thing.create(name:Faker::Company.name )
-Thing.create(name:Faker::Company.name )
+Cat.destroy_all
+10.times do
+  name = Faker::Creature::Cat.name
+  breed = Faker::Creature::Cat.breed
+  registry = Faker::Creature::Cat.registry
+  avatar = Faker::Avatar.image(slug: name, size: '100x400', format: 'png', set: 'set4')
+  Cat.create(name: name, breed: breed, registry: registry, avatar: avatar)
+end
+
+puts "#{Cat.all.size} Cats Seeded"
