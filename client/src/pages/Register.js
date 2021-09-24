@@ -7,6 +7,7 @@ const Register = (props) => {
   const history = useHistory();
   const [email, setEmail] = useState("test@test.com");
   const [password, setPassword] = useState("123456");
+  const [name, setName] = useState("123456");
   const [passwordConfirmation, setPasswordConfirmation] = useState("123456");
   const { handleRegister, error, loading } = useContext(AuthContext);
 
@@ -15,7 +16,7 @@ const Register = (props) => {
       alert("passwords do not match");
       return;
     }
-    handleRegister({ email, password }, history);
+    handleRegister({ email, password, name }, history);
   };
   return (
     <div>
@@ -33,6 +34,13 @@ const Register = (props) => {
             setEmail(value);
           }}
           label={"Email"}
+        />
+        <Form.Input
+          value={name}
+          onChange={(e, { value }) => {
+            setName(value);
+          }}
+          label={"Name"}
         />
         <Form.Input
           value={password}

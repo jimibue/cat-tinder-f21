@@ -5,8 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
 require 'faker'
+
+User.destroy_all
+User.create(email:'test@test.com', password:123456, name:'first user')
+
 Cat.destroy_all
 10.times do
   name = Faker::Creature::Cat.name

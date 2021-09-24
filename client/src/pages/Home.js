@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Button, Card, Header, Icon, Image } from "semantic-ui-react";
+import { Button, Card, Header, Icon, Image, Message } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 export default function Home() {
   const [cats, setCats] = useState([]);
+  const [user, setUser] = useState(null);
   useEffect(() => {
     getCats();
   }, []);
   const getCats = async () => {
     try {
       let res = await axios.get("/api/cats");
+      let res1 = await axios.get("/api/user");
       setCats(res.data);
+      setUser(res1.data);
     } catch (err) {
       alert(err);
+    }
+  };
+
+  const updateUser = async () => {
+    try {
+      let res = await axios.put("/api/dummy_update", {
+        password: "12345678",
+        name: "changed",
+      });
+      setUser(res.data);
+    } catch (err) {
+      console.log(err.response);
     }
   };
   // ui only no db interactio
@@ -43,6 +58,12 @@ export default function Home() {
     let cat = cats[index];
     return (
       <div>
+        <br />
+        <Header as="h1">User</Header>
+        <Message>
+          <code>{JSON.stringify(user)}</code>
+        </Message>
+        <Button onClick={() => updateUser()}>update</Button>
         <br />
         <Header as="h1">Cat Tinder</Header>
         <br />
