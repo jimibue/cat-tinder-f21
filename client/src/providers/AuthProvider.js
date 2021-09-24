@@ -8,22 +8,40 @@ export const AuthConsumer = AuthContext.Consumer;
 
 const AuthProvider = (props) => {
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const wait = (ms) => {
+    return new Promise((res, rej) => {
+      // waiting to seconds to resolve
+      setTimeout(() => {
+        res("yo");
+      }, ms);
+    });
+  };
 
   const handleRegister = async (user, history) => {
     console.log("regsiter user:", user);
     // so axios call now
     try {
+      setError(null);
+      setLoading(true);
+      // want to do after loadin set to true so I can the spinner
+      // REMOVE IN PRODUCTION JUST FOR TESTING SPINNER
+      // this going add 4 seconds to my register call
+      // await wait(4000);
       let res = await axios.post("/api/auth", user);
       console.log(res);
       setUser(res.data.data);
       history.push("/");
     } catch (err) {
       // want to handle this in your UI for you sake
-      alert(
-        "unsuccessful register check console. maybe email is not unique pass invalid"
+      setError(
+        err.response.data.errors ? err.response.data.errors : err.response.data
       );
-      console.log(err);
-      console.log(err.response);
+      // setError(err.response.data.errors.full_messages);
+    } finally {
+      setLoading(false);
     }
   };
   const handleLogin = async (user, history) => {
@@ -54,6 +72,9 @@ const AuthProvider = (props) => {
     <AuthContext.Provider
       value={{
         user,
+        error,
+        loading,
+        setError,
         handleRegister,
         handleLogin,
         handleLogout,
